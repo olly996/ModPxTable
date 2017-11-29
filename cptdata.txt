@@ -1,0 +1,10 @@
+' [{"first":"Valentine","last":"Meyer","email":"valentinemeyer@scentric.com",
+        "actions" : "<span>Valentine</span><span style:\"float:right\"><px-modal modal-heading=\"Sign in required\" btn-modal-positive=\"Sign In\"><px-icon role=\"button\"  class=\"modal-trigger\" icon=\"px-utl:edit\"></px-icon>Hello, this Valentine</span>"},
+        {"first":"Silva","last":"Alexander","email":"silvaalexander@gmail.com",
+        "actions" : "<span>Silva</span><span style:\"float:right\"><px-modal modal-heading=\"Sign in required\" btn-modal-positive=\"Sign In\"><px-icon role=\"button\"  class=\"modal-trigger\" icon=\"px-utl:edit\"></px-icon>Hello, this Silva</span>"},
+        {"first":"Hopkins","last":"Wong","email":"hopkinswong@hotmail.com",
+        "actions" : "<span>Hopkins</span><span style:\"float:right\"><px-modal modal-heading=\"Sign in required\" btn-modal-positive=\"Sign In\"><px-icon role=\"button\"  class=\"modal-trigger\" icon=\"px-utl:edit\"></px-icon>Hello, this Hopkins</span>"},
+        {"first":"Joe","last":"Sherman","email":"joejoe@yahoo.com",
+        "actions" : "<span>Joe</span><span style:\"float:right\"><px-modal modal-heading=\"Sign in required\" btn-modal-positive=\"Sign In\"><px-icon role=\"button\"  class=\"modal-trigger\" icon=\"px-utl:edit\"></px-icon>Hello, this Joe</span>"},
+        {"first":"Jane","last":"Bartlett","email":"jane@scentric.com",
+        "actions" : "<span>Jane</span><span style:\"float:right\"><px-modal modal-heading=\"Sign in required\" btn-modal-positive=\"Sign In\"><px-icon role=\"button\"  class=\"modal-trigger\" icon=\"px-utl:edit\"></px-icon>Hello, this Jane</span>"}]'

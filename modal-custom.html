@@ -1,0 +1,52 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+<script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+<link href="bower_components/px-modal/px-modal.html" rel="import">
+<link href="bower_components/px-icon-set/px-icon.html" rel="import">
+
+<dom-module id="modal-custom">
+
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+            div {
+                width: 50%;
+                height: auto;
+                background-color: blue;
+                color: white;
+                border-radius: 5px;
+                padding: 5px;
+                display: block;
+                cursor: pointer;
+            }
+        </style>
+        <div>Click Me</div>
+
+    </template>
+
+    <script>
+        Polymer({
+            is: 'modal-custom',
+            properties: {
+                message: {
+                    type: String,
+                    value: "Yo Buddy!!",
+                    notify: true
+                },
+                idx: {
+                    type: String
+                }
+            },
+            listeners: {
+                "tap" : "_showRowData"
+            },
+            _showRowData: function(evt){
+                this.fire("indexchanged", this.idx)
+            }
+        });
+    </script>
+
+
+
+</dom-module>

@@ -1,0 +1,111 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+<script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+<link rel="import" href="bower_components/px-theme/px-theme-styles.html">
+<style include="px-theme-styles" is="custom-style"></style>
+<link href="bower_components/px-table-view/px-table-view.html" rel="import">
+<link href="bower_components/px-alert-message/px-alert-message.html" rel="import">
+<link href="bower_components/px-data-table/px-data-table.html" rel="import">
+<link href="bower_components/px-modal/px-modal.html" rel="import">
+<link href="bower_components/px-icon-set/px-icon.html" rel="import">
+<link rel="import" href="custom-modal.html">
+
+<style>
+    .l{
+        float:left
+    }
+    .r{
+        float:right
+    }
+</style>
+<dom-module id="custompxtable-element">
+    <style>
+        #span1 {
+            float: left;
+        }
+        
+        #span2 {
+            float: right;
+        }
+    </style>
+    <template>
+
+       
+
+
+        <px-data-table id="table1" table-data=' [{"first":"Valentine","last":"Meyer","email":"valentinemeyer@scentric.com",
+        "actions" : "<span class=\"l\">Valentine</span><span class=\"r\" ><px-modal btn-modal-positive=\"Yo\"><px-icon role=\"button\"  class=\"modal-trigger\" icon=\"px-fea:alerts\"></px-icon><div id=\"d1\"></div></span>"},
+        {"first":"Silva","last":"Alexander","email":"silvaalexander@gmail.com",
+        "actions" : "<span class=\"l\">Silva</span><span class=\"r\" ><px-modal btn-modal-positive=\"Yo\"><px-icon role=\"button\"  class=\"modal-trigger\" icon=\"px-fea:alerts\"></px-icon><div id=\"d2\"></div></span>"},
+        {"first":"Hopkins","last":"Wong","email":"hopkinswong@hotmail.com",
+        "actions" : "<span class=\"l\">Hopkins</span><span class=\"r\" style:\"float:right\"><px-modal btn-modal-positive=\"Yo\"><px-icon role=\"button\"  class=\"modal-trigger\" icon=\"px-fea:alerts\"></px-icon><div id=\"d3\"></div></span>"},
+        {"first":"Joe","last":"Sherman","email":"joejoe@yahoo.com",
+        "actions" : "<span class=\"l\">Joe</span><span class=\"r\" style:\"float:right\"><px-modal btn-modal-positive=\"Yo\"><px-icon role=\"button\"  class=\"modal-trigger\" icon=\"px-fea:alerts\"></px-icon><div id=\"d4\"></div></span>"},
+        {"first":"Jane","last":"Bartlett","email":"jane@scentric.com",
+        "actions" : "<span class=\"l\">Jane</span><span class=\"r\" style:\"float:right\"><px-modal btn-modal-positive=\"Yo\"><px-icon role=\"button\"  class=\"modal-trigger\" icon=\"px-fea:alerts\"></px-icon><div id=\"d5\"></div></span>"}]'>
+            <px-data-table-column name='actions' id="data1" type="html"></px-data-table-column>
+            <px-data-table-column name='last' class='modal-trigger' sortable filterable> </px-data-table-column>
+            <px-data-table-column name='email' class='modal-trigger' sortable filterable> </px-data-table-column>
+        </px-data-table>
+    </template>
+
+
+    <script type="text/javascript">
+        window.onload = function () {
+            var el = document.querySelector('custompxtable-element');
+          
+
+            for (i = 0; i < el.di.length; i++) {
+                console.log(document.querySelector('#' + el.di[i]));
+                var foo = document.querySelector('#' + el.di[i]);
+
+
+
+            }
+
+            el.GetMod();
+
+
+        },
+            Polymer({
+                is: 'custompxtable-element',
+                properties: {
+                    message: {
+                        type: String,
+                        value: "Hi There",
+                        notify: true,
+                        reflectToAttribute: true
+                    },
+                    data2: {
+                        type: Array,
+                        value: []
+                    },
+                    data: {
+                        type: Array,
+                        value: '[{"first":"Valentine","last":"Meyer","email":"valentinemeyer@scentric.com", "actions" : "<custom-modal ind=0></custom-modal>"},{"first":"Silva","last":"Alexander","email":"silvaalexander@gmail.com",  "actions" : "<custom-modal ind=1></custom-modal>"},{"first":"Hopkins","last":"Wong","email":"hopkinswong@hotmail.com", "actions" : "<custom-modal ind=2></custom-modal>"},{"first":"Joe","last":"Sherman","email":"joejoe@yahoo.com", "actions" : "<custom-modal ind=3></custom-modal>"},{"first":"Jane","last":"Bartlett","email":"jane@scentric.com", "actions" : "<custom-modal ind=4></custom-modal>"}]',
+                        notify: true,
+                        reflectToAttribute: true
+                    },
+                    di: {
+                        type: Array,
+                        value: ["d1", "d2", "d3", "d4", "d5"]
+                    }
+                },
+                
+                tapped: function () {
+                    console.log(this.$.table1.querySelector('#myContent'));
+                    console.log("Icon Tapped");
+                },
+               
+                GetMod: function () {
+                   
+                    console.log(this.di.length);
+                    for (i = 0; i < this.di.length; i++) {
+                        this.$.table1.querySelector('#' + this.di[i]).textContent = "Hello " + this.data[i].first;
+                    }
+
+                }
+               
+            });
+    </script>
+
+</dom-module>

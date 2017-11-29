@@ -1,0 +1,352 @@
+<link rel="import" href="../polymer/polymer.html"/>
+<script src="../Sortable/Sortable.min.js"></script>
+
+<!--
+The `px-table-view-sortable-list` element is a wrapper around the [Sortable.js](https://github.com/RubaXa/Sortable) library.
+
+Use it inside a `px-table-view` container with many `px-table-row` items inside of it to create a sortable list.
+
+### Usage
+
+```
+<div class="flex">
+  <div class="flex__item u-m">
+    <px-table-view id="table-view-demo-43a">
+      <px-table-view-sortable-list id="table-view-demo-43a-sort" content group="grouped">
+        <px-table-row title="Item 1"></px-table-row>
+        <px-table-row title="Item 2"></px-table-row>
+        <px-table-row title="Item 3"></px-table-row>
+      </px-table-view-sortable-list>
+    </px-table-view>
+  </div>
+  <div class="flex__item u-m">
+    <px-table-view id="table-view-demo-43b">
+      <px-table-view-sortable-list id="table-view-demo-43b-sort" content group="grouped">
+        <px-table-row title="Item 4"></px-table-row>
+        <px-table-row title="Item 5"></px-table-row>
+        <px-table-row title="Item 6"></px-table-row>
+      </px-table-view-sortable-list>
+    </px-table-view>
+  </div>
+</div>
+```
+
+### Styling
+
+Custom property | Description
+:------------ | :-------------
+`--px-table-view-sortable-chosen-background-color` | (Sortable only) The background color for picked-up sortable rows
+`--px-table-view-sortable-chosen-text-color` | (Sortable only) The text color for picked-up sortable rows
+`--px-table-view-sortable-chosen-icon-color` | (Sortable only) The icon color for picked-up shortable rows
+`--px-table-view-sortable-ghost-background-color` | (Sortable only) The background color for ghost background sortable rows
+`--px-table-view-sortable-ghost-text-color` | (Sortable only) The text color for ghost background sortable rows
+`--px-table-view-sortable-ghost-icon-color` | (Sortable only) The icon color for ghost background shortable rows
+-->
+<dom-module id="px-table-view-sortable-list">
+  <style is="custom-style">
+    :host {
+      display: block;
+      @apply(--px-table-view-sortable-list);
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -webkit-tap-highlight-color: red;
+    }
+  </style>
+
+  <template>
+    <content></content>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'px-table-view-sortable-list',
+
+      properties: {
+        /**
+         * A named group to allow drag and drop between multiple elements.
+         *
+         * @property group
+         * @type {String}
+         * @default null
+         */
+        group: {
+          type: String,
+          value: 'defaultgroup'
+        },
+
+        /**
+         * Length of sorting animation (`0` for no animation).
+         *
+         * @property animation
+         * @type {Number}
+         * @default 0
+         */
+        animation: {
+          type: Number,
+          value: 0
+        },
+
+        /**
+         * CSS selector set by developer on the draggable handle inside the
+         * sortable item (if any). Used to find the handle.
+         *
+         * @property handle
+         * @type {String}
+         * @default null
+         */
+        handle: {
+          type: String,
+          value: null
+        },
+
+        /**
+         * CSS selector set by the developer on items that should not be sorted.
+         *
+         * @property filter
+         * @type {String}
+         * @default null
+         */
+        filter: {
+          type: String,
+          value: null
+        },
+
+        /**
+         * CSS selector set by the developer on items should be sortable.
+         *
+         * @property sortable
+         * @type {String}
+         * @default '>*'
+         */
+        sortable: {
+          type: String,
+          value: '>*'
+        },
+
+        /**
+         * If `true`, allows scrolling when dragging to edges of list container.
+         *
+         * @property scroll
+         * @type {Boolean}
+         * @default true
+         */
+        scroll: {
+          type: Boolean,
+          value: true
+        },
+
+        /**
+         * Sensitivity of scroll boundary detection.
+         *
+         * @property scrollSensitivity
+         * @type {Number}
+         * @default 30
+         */
+        scrollSensitivity: {
+          type: Number,
+          value: 30
+        },
+
+        /**
+        * The scroll tracking speed.
+        *
+        * @property scrollSpeed
+        * @type {Number}
+        * @default 10
+        */
+        scrollSpeed: {
+          type: Number,
+          value: 10
+        }
+      },
+
+      observers: [
+        '_reactivate(group, sort, disabled, store, animation, handle, filter, sortable, ghostClass, scroll, scrollSensitivity, scrollSpeed)'
+      ],
+
+      created: function() {
+        this._isShady = !Polymer.Settings.useNativeShadow;
+      },
+
+      attached: function() {
+        this._reactivate();
+      },
+
+      /**
+       * Manually destroy and recreate the scrollable instance. Happens whenever
+       * any property changes. This is an expensive action, so try not to configure
+       * properties on the fly. Set them in advance and forget them (if possible).
+       *
+       * @private
+       * @method _reactivate
+       */
+      _reactivate: function() {
+        if (this._sortable) {
+          this._sortable.destroy();
+        }
+        this._sortable = Sortable.create(this, this._generateOptions());
+      },
+
+      /**
+       * Gets all the properties set on the host element to pass to the Sortable
+       * instance that will manage the hosts' lists.
+       *
+       * @private
+       * @method _generateOptions
+       * @return {Object}
+       */
+      _generateOptions: function() {
+        return {
+          group: this.group || Math.random(),
+          sort: true,
+          disabled: false,
+          animation: this.animation,
+          handle: this.handle,
+          filter: this.filter,
+          draggable: this.sortable,
+          ghostClass: this.ghostClass || 'sortable-ghost',
+          dragClass: this.dragClass || 'sortable-drag',
+          scroll: this.scroll,
+          scrollSensitivity: this.scrollSensitivity,
+          scrollSpeed: this.scrollSpeed,
+
+          onStart: function(evt) {
+            evt.item.set('_dragging', true);
+            this.fire('px-table-view-sortable-list-sort-start', evt);
+            evt.stopPropagation();
+          }.bind(this),
+
+          onEnd: function(evt) {
+            evt.item.set('_dragging', false);
+            this.fire('px-table-view-sortable-list-sort-end', evt);
+            evt.stopPropagation();
+          }.bind(this),
+
+          // Called when a new item is added to a list
+          onAdd: function(evt) {
+            if (this._isShady) {
+              // SHADY DOM ONLY:
+              // Manually remove the child from its source list and append it
+              // into the correct position if its target list
+              var item = evt.item;
+              var source = Polymer.dom(evt.from);
+              var sourceIndex = evt.oldIndex;
+              var target = Polymer.dom(evt.to);
+              var targetIndex = evt.newIndex;
+              var targetChildren = target.children;
+
+              // Remove from the source
+              source.removeChild(item);
+              source.flush();
+
+              // Add the target at the correct position
+              if (targetIndex === 0) {
+                target.insertBefore(item, targetChildren[0]);
+              }
+              if (targetIndex === targetChildren.length) {
+                target.appendChild(item);
+              }
+              if (targetIndex > 0 && targetIndex < targetChildren.length) {
+                target.insertBefore(item, targetChildren[targetIndex + 1]);
+              }
+              target.flush();
+            }
+
+            this.fire('px-table-view-sortable-list-sort-add', evt);
+            evt.stopPropagation();
+          }.bind(this),
+
+          // Called when an item is removed from a list
+          onRemove: function(evt) {
+            if (this._isShady) {
+              // SHADY DOM ONLY:
+              // If the child still exists in the list it was to be removed
+              // from, clean it up
+              var item = evt.item;
+              var source = Polymer.dom(evt.from);
+              var sourceChildren = source.children;
+              if (sourceChildren.indexOf(item) !== -1) {
+                source.removeChild(item);
+                source.flush();
+              }
+            }
+
+            this.fire('px-table-view-sortable-list-sort-remove', evt);
+            evt.stopPropagation();
+          }.bind(this),
+
+          // Called when an item is moved around within its existing list
+          onUpdate: function(evt) {
+            if (this._isShady) {
+              // SHADY DOM ONLY:
+              // Manually move this child from its old position to its new
+              // position in the same list
+              var item = evt.item;
+              var oldIndex = evt.oldIndex;
+              var newIndex = evt.newIndex;
+              var list = Polymer.dom(evt.to);
+              var listChildren = list.children;
+
+              // Remove from its original list position
+              list.removeChild(item);
+              list.flush();
+
+              // Add at its new list position
+              if (newIndex === 0 && listChildren[0] instanceof HTMLElement) {
+                list.insertBefore(item, listChildren[0]);
+              }
+              else if (newIndex === (listChildren.length - 1)) {
+                list.appendChild(item);
+              }
+              else if (typeof newIndex === 'number' && listChildren[newIndex] instanceof HTMLElement && listChildren[newIndex] !== item) {
+                list.insertBefore(item, listChildren[newIndex]);
+              }
+              list.flush();
+            }
+
+            this.fire('px-table-view-sortable-list-sort-update', evt);
+            evt.stopPropagation();
+          }.bind(this),
+
+          onSort: function(evt) {
+            this.fire('px-table-view-sortable-list-sort-change', evt);
+            evt.stopPropagation();
+          }.bind(this),
+
+          onFilter: function(evt) {
+            this.fire('px-table-view-sortable-list-sort-filter', evt);
+            evt.stopPropagation();
+          }.bind(this)
+        };
+      }
+      /**
+       * Fires when sorting begins on the sortable list.
+       * @event px-table-view-sortable-list-sort-start
+       */
+      /**
+       * Fired when sorting ends on the sortable list.
+       * @event px-table-view-sortable-list-sort-end
+       */
+      /**
+       * Fired when a new element is dragged into the sortable list by the user.
+       * @event px-table-view-sortable-list-sort-add
+       */
+      /**
+       * Fired when the sortable lists' order is modified by the user.
+       * @event px-table-view-sortable-list-sort-update
+       */
+      /**
+       * Fired when an item is added, removed, or updated in the sortable list.
+       * @event px-table-view-sortable-list-sort-change
+       */
+      /**
+       * Fired when a sortable list item is dragged out of the list by the user.
+       * @event px-table-view-sortable-list-sort-remove
+       */
+      /**
+       * Fired when the sortable list is filtered.
+       * @event px-table-view-sortable-list-sort-remove
+       */
+    });
+  </script>
+</dom-module>

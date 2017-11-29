@@ -1,0 +1,52 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+<script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+<link rel="import" href="bower_components/px-theme/px-theme-styles.html">
+<style include="px-theme-styles" is="custom-style"></style>
+<link href="bower_components/px-alert-message/px-alert-message.html" rel="import">
+<link href="bower_components/px-data-table/px-data-table.html" rel="import">
+<link href="bower_components/px-icon-set/px-icon.html" rel="import">
+<link rel="import" href="modal-custom.html">
+<dom-module id="custom-table">
+  
+    <template>
+        <px-data-table id="datatable" table-data={{tableData}}>
+            <px-data-table-column name='first' sortable filterable> </px-data-table-column>
+            <px-data-table-column name='last' sortable filterable> </px-data-table-column>
+            <px-data-table-column name='email' sortable filterable> </px-data-table-column>
+            <px-data-table-column name='actions' type="html"></px-data-table-column>
+        </px-data-table>
+        <px-modal id="modal" modal-heading="Sign-In Required" btn-modal-positive="Yo">
+                <div> {{message}}</div>
+        </px-modal>
+    </template>
+
+
+    <script type="text/javascript">
+        Polymer({
+            is: 'custom-table',
+            properties: {
+                message: {
+                    type: String,
+                    value: "Hi There",
+                    notify: true,
+                    reflectToAttribute: true
+                },
+                tableData: {
+                    type: Array,
+                    value: [{"first":"Valentine","last":"Meyer","email":"valentinemeyer@scentric.com", "actions" : "<modal-custom idx=0></modal-custom>"},{"first":"Silva","last":"Alexander","email":"silvaalexander@gmail.com",  "actions" : "<modal-custom idx=1></modal-custom>"},{"first":"Hopkins","last":"Wong","email":"hopkinswong@hotmail.com", "actions" : "<modal-custom idx=2></modal-custom>"},{"first":"Joe","last":"Sherman","email":"joejoe@yahoo.com", "actions" : "<modal-custom idx=3></modal-custom>"},{"first":"Jane","last":"Bartlett","email":"jane@scentric.com", "actions" : "<modal-custom idx=4></modal-custom>"}],
+                    notify: true,
+                    reflectToAttribute: true
+                }
+            },
+            listeners: {
+                "indexchanged" : "_indexChanged"
+            },
+            _indexChanged: function(evt){
+                var data = this.tableData[evt.detail];
+                this.message = data.first + " " + data.last;
+                this.$.modal.modalButtonClicked();
+            }
+        });
+    </script>
+
+</dom-module>
