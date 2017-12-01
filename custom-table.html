@@ -7,13 +7,17 @@
 <link href="bower_components/px-icon-set/px-icon.html" rel="import">
 <link rel="import" href="modal-custom.html">
 <dom-module id="custom-table">
-        <style is="custom-style">
-           :root{--px-data-table-cell-background-color--edit:CornFlowerblue;}
-        </style>
+    <style is="custom-style">
+         :root {
+            --px-data-table-cell-background-color--edit: CornFlowerblue;
+        }
+    </style>
     <template>
         <px-data-table id="datatable" table-data={{tableData}}>
-            <px-data-table-column id="first" name='first'  sortable  filterable> </px-data-table-column>
-            <px-data-table-column name='last'  sortable filterable><px-data-table-column name='first' !editable sortable filterable></px-data-table-column> </px-data-table-column>
+            <px-data-table-column id="first" name='first' sortable filterable> </px-data-table-column>
+            <px-data-table-column name='last' sortable filterable>
+                <px-data-table-column name='first' !editable sortable filterable></px-data-table-column>
+            </px-data-table-column>
             <px-data-table-column name='email' sortable filterable> </px-data-table-column>
             <px-data-table-column name='actions' type="html"></px-data-table-column>
         </px-data-table>
@@ -24,7 +28,6 @@
 
 
     <script type="text/javascript">
-    
         Polymer({
             is: 'custom-table',
             properties: {
@@ -44,51 +47,49 @@
             listeners: {
                 "indexchanged": "_indexChanged",
                 'px-cell-click': '_updateData'
-            
+
             },
             _updateData: function (e) {
-              
+
                 var _this = this;
 
-             
+
                 if (e && e.type === 'px-cell-click') {
-                    var ri=e.detail.rowIndex + 1;
+                    var ri = e.detail.rowIndex + 1;
                     var c = e.detail.column.label;
                     var ci = null;
                     var i = 0;
-                    switch(c){
+                    switch (c) {
                         case "First":
-                        var ci = 1;
-                        break;
+                            var ci = 1;
+                            break;
                         case "Last":
-                        var ci = 2;
-                        break;
+                            var ci = 2;
+                            break;
                         case "Email":
-                        var ci = 3;
-                        break;
+                            var ci = 3;
+                            break;
                         case "Actions":
-                        var ci = 4;
-                        break;
+                            var ci = 4;
+                            break;
                     }
-                    var ind =  (ri * 4) - (4 - ci);  //Above logic is used to find the index of cell ri and ci being row and column indexes
-                 
-                   
-                 var cells = this.$.datatable.querySelectorAll('px-data-table-cell');     //Query for data table cell elements 
-                       [].forEach.call(cells,function(cell){
-                           i = i + 1;
-                        if(ind == i)
-                        {
+                    var ind = (ri * 4) - (4 - ci);  //Above logic is used to find the index of cell ri and ci being row and column indexes
+
+
+                    var cells = this.$.datatable.querySelectorAll('px-data-table-cell');     //Query for data table cell elements 
+                    [].forEach.call(cells, function (cell) {
+                        i = i + 1;
+                        if (ind == i) {
                             cell.cellEditable = true;
                             cell.click();
-                            
+
                         }
-                        if(!cell._editing)
-                        {
+                        if (!cell._editing) {
                             cell.cellEditable = false;
                         }
-                       }) ;                                          
-                }  
-},
+                    });
+                }
+            },
 
             _indexChanged: function (evt) {
                 var data = this.tableData[evt.detail];
