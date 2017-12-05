@@ -88,9 +88,16 @@ Custom property | Description | Default
      */
     attached: function() {
       this.importHref(this.import, function(e) {
+        
         if (this.highlightMethod && window.PxHighlight[this.highlightMethod]){
           this.highlight = window.PxHighlight[this.highlightMethod];
+          
           this.fire('px-data-table-highlight-loaded');
+        //  var that = this;
+        //   setTimeout(function(){
+        //   that.fire('px-data-table-highlight-loaded');            
+        // },0);
+        
         }
       }, function(e) {
         // loading error

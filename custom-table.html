@@ -6,21 +6,37 @@
 <link href="bower_components/px-data-table/px-data-table.html" rel="import">
 <link href="bower_components/px-icon-set/px-icon.html" rel="import">
 <link rel="import" href="modal-custom.html">
+<!--<link rel="import" href="px-example-highlight.html">-->
+<link rel="import" href="bower_components/px-data-table/px-data-table-highlight.html">
+
 <dom-module id="custom-table">
     <style is="custom-style">
          :root {
             --px-data-table-cell-background-color--edit: CornFlowerblue;
+            --px-data-table-highlight--low:#69F0AE;
+            
         }
     </style>
     <template>
         <px-data-table id="datatable" table-data={{tableData}}>
-            <px-data-table-column id="first" name='first' editable sortable filterable> </px-data-table-column>
-            <px-data-table-column name='last' sortable editable filterable>
+            <px-data-table-column id="id" name='id' sortable filterable>
             </px-data-table-column>
-            <px-data-table-column name='email' sortable editable filterable> </px-data-table-column>
+            <px-data-table-column id="first" name='first' editable sortable filterable>
+                <px-data-table-highlight highlight-type="cell" highlight-value="low" highlight-method="checkNum" import="px-Valentine-highlight.html">
+                </px-data-table-highlight>
+            </px-data-table-column>
+            <px-data-table-column name='last' sortable editable filterable>
+                <px-data-table-highlight highlight-type="cell" highlight-value="low" highlight-method="checkNum" import="px-Valentine-highlight.html">
+                </px-data-table-highlight>
+            </px-data-table-column>
+            <px-data-table-column name='email' sortable editable filterable>
+                <px-data-table-highlight highlight-type="cell" highlight-value="low" highlight-method="checkNum" import="px-Valentine-highlight.html">
+                </px-data-table-highlight>
+            </px-data-table-column>
             <px-data-table-column name='actions' editable type="html"></px-data-table-column>
         </px-data-table>
         <px-modal id="modal" modal-heading="Sign-In Required" btn-modal-positive="Yo">
+
             <div> {{message}}</div>
         </px-modal>
     </template>
@@ -50,34 +66,34 @@
 
             },
             _updateData: function (e) {
-                var i=0;
-                 if (e && e.type === 'px-cell-click') {
-                //     var ri = e.detail.rowIndex + 1;
-                //     var c = e.detail.column.label;
-                //     var ci = null;
-                //     var i = 0;
-                //     switch (c) {
-                //         case "First":
-                //             var ci = 1;
-                //             break;
-                //         case "Last":
-                //             var ci = 2;
-                //             break;
-                //         case "Email":
-                //             var ci = 3;
-                //             break;
-                //         case "Actions":
-                //             var ci = 4;
-                //             break;
-                //     }
-                var cells = this.$.datatable.querySelectorAll('px-data-table-cell');
-                [].forEach.call(cells, function (cell) {
-                    cell.cellEditable = true;
-                });
+                var i = 0;
+                if (e && e.type === 'px-cell-click') {
+                    //     var ri = e.detail.rowIndex + 1;
+                    //     var c = e.detail.column.label;
+                    //     var ci = null;
+                    //     var i = 0;
+                    //     switch (c) {
+                    //         case "First":
+                    //             var ci = 1;
+                    //             break;
+                    //         case "Last":
+                    //             var ci = 2;
+                    //             break;
+                    //         case "Email":
+                    //             var ci = 3;
+                    //             break;
+                    //         case "Actions":
+                    //             var ci = 4;
+                    //             break;
+                    //     }
+                    var cells = this.$.datatable.querySelectorAll('px-data-table-cell');
+                    [].forEach.call(cells, function (cell) {
+                        cell.cellEditable = true;
+                    });
                     //var ind = (ri * 4) - (4 - ci);  //Above logic is used to find the index of cell ri and ci being row and column indexes
                     //console.log(this.$.datatable.querySelectorAll('.cell__edit'));
                     var editcell = this.$.datatable.querySelector('.cell__edit');
-                   // var cells = this.$.datatable.querySelectorAll('px-data-table-cell');     //Query for data table cell elements 
+                    // var cells = this.$.datatable.querySelectorAll('px-data-table-cell');     //Query for data table cell elements 
                     [].forEach.call(cells, function (cell) {
                         // i = i + 1;
                         // if(cell != editcell)
@@ -85,20 +101,37 @@
 
                         //     cell.cellEditable = false;
                         // }
-                         if (editcell) {
-                             if(cell != editcell){
-                             cell.cellEditable = false;
-                             }
-                         }
-                        
-                         
+                        if (editcell) {
+                            if (cell != editcell) {
+                                cell.cellEditable = false;
+                            }
+                        }
+
+
                     });
-                }},
+                }
+            },
 
             _indexChanged: function (evt) {
                 var data = this.tableData[evt.detail];
                 this.message = data.first + " " + data.last;
                 this.$.modal.modalButtonClicked();
+            },
+            ready: function () {
+
+                var i = 1;
+                var temp = [];
+                this.tableData.forEach(function (el) {
+                    el.id = i;
+                    i++;
+                    temp.push(el);
+                });
+                //this.tableData = null;                  
+                this.set('tableData', temp);
+
+
+
+
             }
         });
     </script>

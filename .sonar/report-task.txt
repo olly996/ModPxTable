@@ -1,0 +1,6 @@
+projectKey=Neo2
+serverUrl=http://localhost:9000
+serverVersion=6.7.0.33306
+dashboardUrl=http://localhost:9000/dashboard/index/Neo2
+ceTaskId=AWAgMb2hUnLwRXhE_4UC
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AWAgMb2hUnLwRXhE_4UC
