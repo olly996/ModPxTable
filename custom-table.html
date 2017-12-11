@@ -12,9 +12,8 @@
 <dom-module id="custom-table">
     <style is="custom-style">
          :root {
-            --px-data-table-cell-background-color--edit: CornFlowerblue;
-            --px-data-table-highlight--low:#69F0AE;
-            
+            /*--px-data-table-cell-background-color--edit: CornFlowerblue;*/
+            --px-data-table-highlight--low: orange;
         }
     </style>
     <template>
@@ -24,14 +23,23 @@
             <px-data-table-column id="first" name='first' editable sortable filterable>
                 <px-data-table-highlight highlight-type="cell" highlight-value="low" highlight-method="checkNum" import="px-Valentine-highlight.html">
                 </px-data-table-highlight>
+                <px-validation>
+                    <px-validator validation-method="isNotNumberFirst" import="px-example-validator.html"></px-validator>
+                </px-validation>
             </px-data-table-column>
             <px-data-table-column name='last' sortable editable filterable>
                 <px-data-table-highlight highlight-type="cell" highlight-value="low" highlight-method="checkNum" import="px-Valentine-highlight.html">
                 </px-data-table-highlight>
+                <px-validation>
+                    <px-validator validation-method="isNotNumberLast" import="px-example-validator.html"></px-validator>
+                </px-validation>
             </px-data-table-column>
             <px-data-table-column name='email' sortable editable filterable>
                 <px-data-table-highlight highlight-type="cell" highlight-value="low" highlight-method="checkNum" import="px-Valentine-highlight.html">
                 </px-data-table-highlight>
+                 <px-validation>
+                    <px-validator validation-method="isNotNumberEmail" import="px-example-validator.html"></px-validator>
+                </px-validation>
             </px-data-table-column>
             <px-data-table-column name='actions' editable type="html"></px-data-table-column>
         </px-data-table>
@@ -61,55 +69,62 @@
             },
             listeners: {
                 "indexchanged": "_indexChanged",
-                //'px-cell-click': '_updateData',
+                'px-cell-click': '_updateData',
                 // 'tap' : '_setcell'
 
             },
             _updateData: function (e) {
-                var i = 0;
-                if (e && e.type === 'px-cell-click') {
-                    //     var ri = e.detail.rowIndex + 1;
-                    //     var c = e.detail.column.label;
-                    //     var ci = null;
-                    //     var i = 0;
-                    //     switch (c) {
-                    //         case "First":
-                    //             var ci = 1;
-                    //             break;
-                    //         case "Last":
-                    //             var ci = 2;
-                    //             break;
-                    //         case "Email":
-                    //             var ci = 3;
-                    //             break;
-                    //         case "Actions":
-                    //             var ci = 4;
-                    //             break;
-                    //     }
-                    var cells = this.$.datatable.querySelectorAll('px-data-table-cell');
-                    [].forEach.call(cells, function (cell) {
-                        cell.cellEditable = true;
-                    });
-                    //var ind = (ri * 4) - (4 - ci);  //Above logic is used to find the index of cell ri and ci being row and column indexes
-                    //console.log(this.$.datatable.querySelectorAll('.cell__edit'));
-                    var editcell = this.$.datatable.querySelector('.cell__edit');
-                    // var cells = this.$.datatable.querySelectorAll('px-data-table-cell');     //Query for data table cell elements 
-                    [].forEach.call(cells, function (cell) {
-                        // i = i + 1;
-                        // if(cell != editcell)
-                        // {
-
-                        //     cell.cellEditable = false;
-                        // }
-                        if (editcell) {
-                            if (cell != editcell) {
-                                cell.cellEditable = false;
-                            }
-                        }
+                // console.log(e.detail.column);
+                this.$.datatable.querySelectorAll('.cell__edit')[0].style.backgroundColor = "white";
+                // this.$.datatable.querySelectorAll('.cell__edit')[0].customStyle['--px-data-table-highlight--low'] = 'white';
+                // this.$.datatable.querySelectorAll('.cell__edit')[0].updateStyles();
+                // console.log( this.$.datatable.querySelectorAll('.cell__edit')[0]);
 
 
-                    });
-                }
+                // var i = 0;
+                // if (e && e.type === 'px-cell-click') {
+                //     //     var ri = e.detail.rowIndex + 1;
+                //     //     var c = e.detail.column.label;
+                //     //     var ci = null;
+                //     //     var i = 0;
+                //     //     switch (c) {
+                //     //         case "First":
+                //     //             var ci = 1;
+                //     //             break;
+                //     //         case "Last":
+                //     //             var ci = 2;
+                //     //             break;
+                //     //         case "Email":
+                //     //             var ci = 3;
+                //     //             break;
+                //     //         case "Actions":
+                //     //             var ci = 4;
+                //     //             break;
+                //     //     }
+                //     var cells = this.$.datatable.querySelectorAll('px-data-table-cell');
+                //     [].forEach.call(cells, function (cell) {
+                //         cell.cellEditable = true;
+                //     });
+                //     //var ind = (ri * 4) - (4 - ci);  //Above logic is used to find the index of cell ri and ci being row and column indexes
+                //     //console.log(this.$.datatable.querySelectorAll('.cell__edit'));
+                //     var editcell = this.$.datatable.querySelector('.cell__edit');
+                //     // var cells = this.$.datatable.querySelectorAll('px-data-table-cell');     //Query for data table cell elements 
+                //     [].forEach.call(cells, function (cell) {
+                //         // i = i + 1;
+                //         // if(cell != editcell)
+                //         // {
+
+                //         //     cell.cellEditable = false;
+                //         // }
+                //         if (editcell) {
+                //             if (cell != editcell) {
+                //                 cell.cellEditable = false;
+                //             }
+                //         }
+
+
+                //     });
+                // }
             },
 
             _indexChanged: function (evt) {
@@ -123,8 +138,9 @@
                 var temp = [];
                 this.tableData.forEach(function (el) {
                     el.id = i;
-                    i++;
+
                     temp.push(el);
+                    i++;
                 });
                 //this.tableData = null;                  
                 this.set('tableData', temp);

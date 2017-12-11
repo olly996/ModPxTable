@@ -1,0 +1,44 @@
+<script>
+  PxValidators = {
+    errorObject: function () {
+      return {
+        passedValidation: false,
+        failedValidationFunctionName: '',
+        failedValidationErrorMessage: ''
+      };
+    },
+    isNumber: function (value) {
+      var errObj = PxValidators.errorObject();
+      errObj.failedValidationFunctionName = 'isNumber';
+      errObj.failedValidationErrorMessage = 'Enter a numeric value';
+      errObj.passedValidation = ((value || value === 0) && value.toString() !== "true") ? (+value === +value) : false;
+      return errObj;
+    }, isNotNumberFirst: function (value) {
+      var errObj = PxValidators.errorObject();
+      errObj.failedValidationFunctionName = 'isNotNumberFirst';
+      errObj.failedValidationErrorMessage = 'Enter a Valid First Name';
+      errObj.passedValidation = !(((value || value === 0 || value == "") && value.toString() !== "true") ? (+value === +value) : false);
+      return errObj;
+    }, isNotNumberLast: function (value) {
+      var errObj = PxValidators.errorObject();
+      errObj.failedValidationFunctionName = 'isNotNumberLast';
+      errObj.failedValidationErrorMessage = 'Enter a Valid Last Name';
+      errObj.passedValidation = !(((value || value === 0 || value == "") && value.toString() !== "true") ? (+value === +value) : false);
+      return errObj;
+    }, isNotNumberEmail: function (value) {
+      var errObj = PxValidators.errorObject();
+      errObj.failedValidationFunctionName = 'isNotNumberEmail';
+      errObj.failedValidationErrorMessage = 'Enter a Valid Email ID';
+      errObj.passedValidation = !(((value || value === 0 || value == "") && value.toString() !== "true") ? (+value === +value) : false);
+      return errObj;
+    },
+    alwaysFails: function (value) {
+      var errObj = PxValidators.errorObject();
+      errObj.failedValidationFunctionName = 'alwaysFails';
+      errObj.failedValidationErrorMessage = 'Nope';
+      errObj.passedValidation = false;
+      return errObj;
+    }
+  };
+
+</script>
