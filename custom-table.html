@@ -70,12 +70,20 @@
             listeners: {
                 "indexchanged": "_indexChanged",
                 'px-cell-click': '_updateData',
+                'cell-value-changed' : '_cellChanged',
+                'keydown':'_cellChanged'
                 // 'tap' : '_setcell'
+
+            },
+            _cellChanged:function(e){
+                
+                 this.$.datatable.querySelectorAll('.cell__edit')[0].style.backgroundColor = "white";
 
             },
             _updateData: function (e) {
                 // console.log(e.detail.column);
-                this.$.datatable.querySelectorAll('.cell__edit')[0].style.backgroundColor = "white";
+               
+                // console.log(this.$.datatable.querySelectorAll('.cell__edit')[0]._editing);
                 // this.$.datatable.querySelectorAll('.cell__edit')[0].customStyle['--px-data-table-highlight--low'] = 'white';
                 // this.$.datatable.querySelectorAll('.cell__edit')[0].updateStyles();
                 // console.log( this.$.datatable.querySelectorAll('.cell__edit')[0]);
